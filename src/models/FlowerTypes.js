@@ -1,5 +1,9 @@
 import RoseOrder from './RoseOrder'
+import LilyOrder from './LilyOrder'
+import TulipOrder from './TulipOrder'
 
 export default {
-  "R12": RoseOrder  
+  [RoseOrder.code]: RoseOrder,
+  [LilyOrder.code]: LilyOrder,
+  [TulipOrder.code]: TulipOrder,
 }

@@ -1,14 +1,14 @@
 export default class FlowerOrder {
   
-  constructor({ CODE, BUNDLES, quantity }) {
-    this.CODE = CODE
-    this.BUNDLES = BUNDLES
+  constructor({ code, bundles, quantity }) {
+    this.code = code
+    this.bundles = bundles
     this.quantity = quantity
   }
 
   get order() {
     let orderQuantity = this.quantity
-    let myOrder = this.BUNDLES.reduce(
+    let myOrder = this.bundles.reduce(
       (acc, curr) => {
         let myQuantity = Math.floor(acc.remaining / curr.quantity)
         let remaining = acc.remaining % curr.quantity

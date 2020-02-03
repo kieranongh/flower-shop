@@ -1,18 +1,22 @@
 import FlowerOrder from "./FlowerOrder"
 
-const CODE = "R12"
+const CODE = "L09"
 const BUNDLES = [
   {
-    quantity: 10,
-    price: 1299
+    quantity: 9,
+    price: 2495
   },
   {
-    quantity: 5,
-    price: 699
+    quantity: 6,
+    price: 1695
+  },
+  {
+    quantity: 3,
+    price: 995
   }
 ]
 
-export default class RoseOrder extends FlowerOrder {
+export default class LilyOrder extends FlowerOrder {
   static code = CODE
   static bundles = BUNDLES
   
