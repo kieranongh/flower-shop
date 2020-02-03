@@ -10,7 +10,7 @@ const TEST = `10 R12
 13 T58`
 
 const OrderForm = () => {
-  const [value, setValue] = React.useState('Enter orders here')
+  const [value, setValue] = React.useState(TEST)
 
   const handleChange = event => {
     setValue(event.target.value)    
@@ -18,7 +18,7 @@ const OrderForm = () => {
 
   useEffect(() => {
     // try
-    const requests = TEST.split(/\n/).map(line => {
+    const requests = value.split(/\n/).map(line => {
       const [quantity, code] = line.split(/\s/)
       return { code, quantity }
     })
@@ -26,7 +26,6 @@ const OrderForm = () => {
     requests.map(req => {
       console.log(`req => `, req)
       const flowerType = FlowerTypes[req.code]
-      console.log(`flowerType => `, flowerType)
       const order = flowerType ? new flowerType(req.quantity) : null
 
       if(order) {

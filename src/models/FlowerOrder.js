@@ -10,7 +10,6 @@ export default class FlowerOrder {
     let orderQuantity = this.quantity
     let myOrder = this.BUNDLES.reduce(
       (acc, curr) => {
-        console.log(`acc, curr => `, acc, curr)
         let myQuantity = Math.floor(acc.remaining / curr.quantity)
         let remaining = acc.remaining % curr.quantity
         let subtotalPrice = myQuantity * curr.price
