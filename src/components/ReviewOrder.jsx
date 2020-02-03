@@ -6,14 +6,6 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 
-const products = [
-  { name: 'Product 1', desc: 'A nice thing', price: '$9.99' },
-  { name: 'Product 2', desc: 'Another thing', price: '$3.45' },
-  { name: 'Product 3', desc: 'Something else', price: '$6.51' },
-  { name: 'Product 4', desc: 'Best thing of all', price: '$14.11' },
-  { name: 'Shipping', desc: '', price: 'Free' },
-]
-
 const useStyles = makeStyles(theme => ({
   listItem: {
     padding: theme.spacing(1, 0),
@@ -22,6 +14,10 @@ const useStyles = makeStyles(theme => ({
     fontWeight: '700',
   }
 }))
+
+const inCurrency = value => {
+  return `$${value/100}`
+}
 
 const ReviewOrder = props => {
   const { orderResult = "" } = props
@@ -34,10 +30,17 @@ const ReviewOrder = props => {
     <React.Fragment>
       <Typography variant="h6">Bundles</Typography>
       <List disablePadding>
-        {products.map(product => (
-          <ListItem className={classes.listItem} key={product.name}>
-            <ListItemText primary={product.name} secondary={product.desc} />
-            <Typography variant="body2">{product.price}</Typography>
+        {orderResult.map(order => (
+          // needs uuids
+          <ListItem className={classes.listItem} key={order.code}>
+            <ListItemText
+              primary={`${order.quantity} x ${order.code}`}
+              secondary={Object.entries(order.order).map(([key, val]) => {
+                console.log(`key, val => `, key, val)
+                return (<p key={key}>{val.quantity} bundles of {key} = {inCurrency(val.subtotalPrice)}</p>)
+              })}
+            />
+            <Typography variant="body2">{inCurrency(order.order.totalPrice)}</Typography>
           </ListItem>
         ))}
         <ListItem className={classes.listItem}>
