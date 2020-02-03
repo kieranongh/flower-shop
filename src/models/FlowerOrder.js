@@ -1,23 +1,14 @@
-export default class RoseOrder {
-  static bundles = [
-    {
-      quantity: 10,
-      price: 1299
-    },
-    {
-      quantity: 5,
-      price: 699
-    }
-  ]
+export default class FlowerOrder {
   
-  constructor(quantity) {
+  constructor({ CODE, BUNDLES, quantity }) {
+    this.CODE = CODE
+    this.BUNDLES = BUNDLES
     this.quantity = quantity
   }
 
   get order() {
-    console.log(`this => `, this)
     let orderQuantity = this.quantity
-    let myOrder = RoseOrder.bundles.reduce(
+    let myOrder = this.BUNDLES.reduce(
       (acc, curr) => {
         console.log(`acc, curr => `, acc, curr)
         let myQuantity = Math.floor(acc.remaining / curr.quantity)
