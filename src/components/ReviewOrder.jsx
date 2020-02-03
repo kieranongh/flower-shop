@@ -23,7 +23,11 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const ReviewOrder = () => {
+const ReviewOrder = props => {
+  const { orderResult = "" } = props
+
+  console.log(`orderResult => `, orderResult)
+
   const classes = useStyles()
 
   return (
