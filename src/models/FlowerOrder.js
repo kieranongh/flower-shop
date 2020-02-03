@@ -31,6 +31,8 @@ export default class FlowerOrder {
         totalPrice: 0
       } // initial
     )
+    // remove the temporary variable
+    delete myOrder.remaining
     return myOrder
   }
 
