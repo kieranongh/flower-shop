@@ -10,17 +10,20 @@ const OrderForm = props => {
     calculateOrders
   } = props
 
+  const handleChange = event => {
+    setOrderInput(event.target.value)
+  }
+
   return (
     <React.Fragment>
       <Typography variant="h6">Orders</Typography>
       <TextField
-        id="standard-multiline-flexible"
         label="Orders"
         multiline
         fullWidth
         rows="4"
         value={orderInput}
-        onChange={setOrderInput}
+        onChange={handleChange}
       />
       <Button
         variant="contained"

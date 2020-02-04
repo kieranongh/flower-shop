@@ -33,10 +33,6 @@ const FlowerShop = () => {
   const [orderInput, setOrderInput] = React.useState(TEST)
   const [orderResult, setOrderResult] = React.useState([])
   const [error, setError] = React.useState(null)
-  
-  const handleChange = event => {
-    setOrderInput(event.target.value)
-  }
 
   const calculateOrders = () =>{
     try {
@@ -81,7 +77,7 @@ const FlowerShop = () => {
             <Paper className={classes.paper}>
               <OrderForm
                 orderInput={orderInput}
-                setOrderInput={handleChange}
+                setOrderInput={setOrderInput}
                 calculateOrders={calculateOrders}
               />
             </Paper>
