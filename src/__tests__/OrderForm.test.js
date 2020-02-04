@@ -1,7 +1,6 @@
 import React from 'react'
 import { render, fireEvent } from '@testing-library/react'
 import OrderForm from '../components/OrderForm'
-// import { jssPreset } from '@material-ui/core';
 
 test('renders a calculate button', () => {
   const { getByText } = render(<OrderForm />)
