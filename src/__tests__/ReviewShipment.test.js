@@ -1,6 +1,7 @@
 import React from 'react'
 import { render } from '@testing-library/react'
 import ReviewShipment from '../components/ReviewShipment'
+import { inCurrency } from '../utils'
 
 const exampleRoseShipment = {
   "uuid": "fb9c0830-b037-4eb8-babe-5d170dc0b745",
@@ -28,10 +29,6 @@ const exampleRoseShipment = {
     }
   },
   "totalPrice": 1299
-}
-
-const inCurrency = value => {
-  return `$${(value/100).toFixed(2)}`
 }
 
 test('total price exists and is set to default value', () => {

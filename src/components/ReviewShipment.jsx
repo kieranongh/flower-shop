@@ -6,6 +6,8 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 
+import { inCurrency } from '../utils'
+
 const useStyles = makeStyles(theme => ({
   listItem: {
     padding: theme.spacing(1, 0),
@@ -15,15 +17,12 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const inCurrency = value => {
-  return `$${(value/100).toFixed(2)}`
-}
-
 const ReviewShipment = props => {
   const { orderResult = []} = props
 
   const [totalPrice, setTotalPrice] = React.useState(0)
 
+  // calculates the total price when orderResult changes
   useEffect(() => {
       const total = orderResult.reduce((acc, curr) => (acc + curr.totalPrice), 0)
       setTotalPrice(total)
@@ -43,6 +42,7 @@ const ReviewShipment = props => {
               primary={`${shipment.quantity} x ${shipment.code}`}
               secondary={!shipment.error ? Object.entries(shipment.bundles).map(([key, { quantity, subtotalPrice}]) => (
                 <React.Fragment key={key}>
+                  {/* eslint-disable-next-line */}
                   {quantity} bundle{quantity == 1 ? '' : 's'} of {key} = {inCurrency(subtotalPrice)}<br/>
                 </React.Fragment>
               )) :

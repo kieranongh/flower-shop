@@ -5,11 +5,11 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import Container from '@material-ui/core/Container'
 import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
+import Typography from '@material-ui/core/Typography'
 
-import FlowerTypes from '../models/FlowerTypes'
 import OrderForm from './OrderForm'
 import ReviewShipment from './ReviewShipment'
-import { Typography } from '@material-ui/core'
+import { parseOrderInput } from '../utils'
 
 const useStyles = makeStyles(theme => ({
   layout: {
@@ -34,28 +34,11 @@ const FlowerShop = () => {
   const [orderResult, setOrderResult] = React.useState([])
   const [error, setError] = React.useState(null)
 
-  const calculateOrders = () =>{
+  const calculateOrders = () => {
+    setError(null)
     try {
-      setError(null)
-
-      const requests = orderInput.split(/\n/).map(line => {
-        const [quantity, code] = line.split(/\s/)
-        return { code, quantity }
-      })
-      
-      const newOrderResult = requests.map(req => {
-        const flowerType = FlowerTypes[req.code]
-        const order = flowerType ? new flowerType(req.quantity) : null
-
-        console.log(`order => `, order)
-
-        if(!order) {
-          throw new Error('Flower type does not exist')
-        }
-        return order
-      })
-
-      setOrderResult(newOrderResult)
+      const shipments = parseOrderInput(orderInput)
+      setOrderResult(shipments)
     }
     catch (e) {
       setError("Cannot read order string, is it correct?")

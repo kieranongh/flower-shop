@@ -3,6 +3,7 @@ import React from 'react'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
+import { Grid } from '@material-ui/core'
 
 const OrderForm = props => {
   const {
@@ -17,22 +18,32 @@ const OrderForm = props => {
   return (
     <React.Fragment>
       <Typography variant="h6">Orders</Typography>
-      <TextField
-        id="input-orders"
-        label="Orders"
-        multiline
-        fullWidth
-        rows="4"
-        value={orderInput}
-        onChange={handleChange}
-      />
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={calculateOrders}
+      <Grid container
+        direction="column"
+        justify="center"
+        alignItems="center"
+        spacing={2}
       >
-        Calculate Orders
-      </Button>
+        <Grid item xs={12}>
+          <TextField
+            id="input-orders"
+            label="Orders"
+            multiline
+            fullWidth
+            value={orderInput}
+            onChange={handleChange}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={calculateOrders}
+            >
+            Calculate Orders
+          </Button>
+        </Grid>
+      </Grid>
     </React.Fragment>
   )
 }
