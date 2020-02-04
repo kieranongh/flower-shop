@@ -4,35 +4,59 @@ export default class FlowerOrder {
     this.code = code
     this.bundles = bundles
     this.quantity = quantity
+    this.error = null
+    this.order = this.generateOrder()
+    this.totalPrice = this.generateTotalPrice()
   }
 
-  get order() {
+  generateOrder() {
     let orderQuantity = this.quantity
-    let myOrder = this.bundles.reduce(
-      (acc, curr) => {
-        let myQuantity = Math.floor(acc.remaining / curr.quantity)
-        let remaining = acc.remaining % curr.quantity
-        let subtotalPrice = myQuantity * curr.price
-        let totalPrice = acc.totalPrice + subtotalPrice
+    var myOrder
 
-        return {
-          ...acc,
-          [curr.quantity]: {
-            quantity: myQuantity,
-            subtotalPrice
-          },
-          remaining,
-          totalPrice
-        }
-      },
-      {
-        remaining: orderQuantity,
-        totalPrice: 0
-      } // initial
-    )
-    // remove the temporary variable
-    delete myOrder.remaining
-    return myOrder
+    let i = 0
+    while (i !== this.bundles.length) {
+      myOrder = this.bundles.slice(i).reduce(
+        (acc, curr) => {
+          let myQuantity = Math.floor(acc.remaining / curr.quantity)
+          let remaining = acc.remaining % curr.quantity
+          let subtotalPrice = myQuantity * curr.price
+
+          return {
+            ...acc,
+            [curr.quantity]: {
+              quantity: myQuantity,
+              subtotalPrice
+            },
+            remaining
+          }
+        },
+        {
+          remaining: orderQuantity
+        } // initial
+      )
+      
+      if(myOrder.remaining !== 0) {
+        console.log(myOrder.remaining)
+        i++
+      }
+      else {
+        // remove the temporary variable
+        delete myOrder.remaining
+        return myOrder
+      }
+
+    }
+    // if no solution found, set an error and return an empty order
+    if (! (i < this.bundles.length)) {
+      this.error = "Order cannot be met with bundles, try another quantity"
+      return { }
+    }
   }
 
+  generateTotalPrice() {
+    return Object.values(this.order).reduce(
+      (acc, curr) => (acc + curr.subtotalPrice),
+      0
+    )
+  }
 }

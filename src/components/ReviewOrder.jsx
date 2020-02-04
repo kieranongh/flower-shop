@@ -35,12 +35,13 @@ const ReviewOrder = props => {
           <ListItem className={classes.listItem} key={order.code}>
             <ListItemText
               primary={`${order.quantity} x ${order.code}`}
-              secondary={Object.entries(order.order).map(([key, val]) => {
-                console.log(`key, val => `, key, val)
-                return (<p key={key}>{val.quantity} bundles of {key} = {inCurrency(val.subtotalPrice)}</p>)
-              })}
+              secondary={!order.error ? Object.entries(order.order).map(([key, val]) => {
+                return (<React.Fragment key={key}>{val.quantity} bundles of {key} = {inCurrency(val.subtotalPrice)}<br/></React.Fragment>)
+              }) :
+              (<React.Fragment>{order.error}</React.Fragment> )
+            }
             />
-            <Typography variant="body2">{inCurrency(order.order.totalPrice)}</Typography>
+            <Typography variant="body2">{inCurrency(order.totalPrice)}</Typography>
           </ListItem>
         ))}
         <ListItem className={classes.listItem}>
