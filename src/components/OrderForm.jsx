@@ -2,10 +2,12 @@ import React from 'react'
 
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
+import Button from '@material-ui/core/Button'
 
 const OrderForm = props => {
   const {
-    orderInput = "", setOrderInput
+    orderInput = "", setOrderInput,
+    calculateOrders
   } = props
 
   return (
@@ -20,6 +22,13 @@ const OrderForm = props => {
         value={orderInput}
         onChange={setOrderInput}
       />
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={calculateOrders}
+      >
+        Calculate Orders
+      </Button>
     </React.Fragment>
   )
 }

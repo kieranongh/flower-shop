@@ -9,27 +9,17 @@ import Grid from '@material-ui/core/Grid'
 import FlowerTypes from '../models/FlowerTypes'
 import OrderForm from './OrderForm'
 import ReviewOrder from './ReviewOrder'
+import { Typography } from '@material-ui/core'
 
 const useStyles = makeStyles(theme => ({
   layout: {
     width: 'auto',
     marginLeft: theme.spacing(2),
-    marginRight: theme.spacing(2),
-    [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
-      width: 600,
-      marginLeft: 'auto',
-      marginRight: 'auto',
-    },
+    marginRight: theme.spacing(2)
   },
   paper: {
     marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(3),
-    padding: theme.spacing(2),
-    [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
-      marginTop: theme.spacing(6),
-      marginBottom: theme.spacing(6),
-      padding: theme.spacing(3),
-    },
+    padding: theme.spacing(2)
   },
 }))
 
@@ -42,50 +32,57 @@ const FlowerShop = () => {
   const classes = useStyles()
   const [orderInput, setOrderInput] = React.useState(TEST)
   const [orderResult, setOrderResult] = React.useState([])
+  const [error, setError] = React.useState(null)
   
   const handleChange = event => {
     setOrderInput(event.target.value)
   }
 
-  useEffect(() => {
-    // try
-    const requests = orderInput.split(/\n/).map(line => {
-      const [quantity, code] = line.split(/\s/)
-      return { code, quantity }
-    })
-    console.log(`FlowerTypes => `, FlowerTypes)
-    const newOrderResult = requests.map(req => {
-      console.log(`req => `, req)
-      const flowerType = FlowerTypes[req.code]
-      const order = flowerType ? new flowerType(req.quantity) : null
+  const calculateOrders = () =>{
+    try {
+      setError(null)
 
-      if(order) {
-        console.log(`order => `, order)
-        console.log(`order.quantity => `, order.quantity)
-        console.log(`order.order => `, order.order)
-      }
-      else {
-        console.log('Flower type does not exist')
-      }
-      return order
-    })
+      const requests = orderInput.split(/\n/).map(line => {
+        const [quantity, code] = line.split(/\s/)
+        return { code, quantity }
+      })
+      
+      const newOrderResult = requests.map(req => {
+        const flowerType = FlowerTypes[req.code]
+        const order = flowerType ? new flowerType(req.quantity) : null
 
-    console.log(`newOrderResult => `, newOrderResult)
+        if(!order) {
+          throw new Error('Flower type does not exist')
+        }
+        return order
+      })
 
-    setOrderResult(newOrderResult)
-
-  }, [orderInput])
+      setOrderResult(newOrderResult)
+    }
+    catch (e) {
+      setError("Cannot read order string, is it correct?")
+      console.log(e)
+    }
+  }
 
   return (
     <React.Fragment>
       <CssBaseline />
-      <Container>
+      <Container className={classes.layout}>
         <Grid container justify="center" spacing={3}>
+          {error && (
+            <Grid item xs={12}>
+              <Paper className={classes.paper} style={{ textAlign: "center" }}>
+                <Typography color="error">{error}</Typography>
+              </Paper>
+            </Grid>
+          )}
           <Grid item xs={12} md={6}>
             <Paper className={classes.paper}>
               <OrderForm
                 orderInput={orderInput}
                 setOrderInput={handleChange}
+                calculateOrders={calculateOrders}
               />
             </Paper>
           </Grid>
