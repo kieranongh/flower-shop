@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 
 import Typography from '@material-ui/core/Typography'
@@ -16,13 +16,20 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const inCurrency = value => {
-  return `$${value/100}`
+  return `$${(value/100).toFixed(2)}`
 }
 
 const ReviewOrder = props => {
   const { orderResult = "" } = props
 
-  console.log(`orderResult => `, orderResult)
+  const [totalPrice, setTotalPrice] = React.useState(0)
+
+  useEffect(() => {
+      const total = orderResult.reduce((acc, curr) => (acc + curr.totalPrice), 0)
+      setTotalPrice(total)
+    },
+    [orderResult]
+  )
 
   const classes = useStyles()
 
@@ -46,7 +53,7 @@ const ReviewOrder = props => {
         <ListItem className={classes.listItem}>
           <ListItemText primary="Total" />
           <Typography variant="subtitle1" className={classes.total}>
-            $34.06
+            {inCurrency(totalPrice)}
           </Typography>
         </ListItem>
       </List>
