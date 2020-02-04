@@ -1,6 +1,9 @@
+import uuid from 'uuid'
+
 export default class FlowerOrder {
   
   constructor({ code, bundles, quantity }) {
+    this.uuid = uuid()
     this.code = code
     this.bundles = bundles
     this.quantity = quantity

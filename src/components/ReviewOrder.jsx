@@ -31,8 +31,7 @@ const ReviewOrder = props => {
       <Typography variant="h6">Bundles</Typography>
       <List disablePadding>
         {orderResult.map(order => (
-          // needs uuids
-          <ListItem className={classes.listItem} key={order.code}>
+          <ListItem className={classes.listItem} key={order.uuid}>
             <ListItemText
               primary={`${order.quantity} x ${order.code}`}
               secondary={!order.error ? Object.entries(order.order).map(([key, val]) => {
