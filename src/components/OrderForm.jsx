@@ -18,6 +18,7 @@ const OrderForm = props => {
     <React.Fragment>
       <Typography variant="h6">Orders</Typography>
       <TextField
+        id="input-orders"
         label="Orders"
         multiline
         fullWidth

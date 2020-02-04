@@ -39,7 +39,6 @@ export default class FlowerOrder {
       )
       
       if(myOrder.remaining !== 0) {
-        console.log(myOrder.remaining)
         i++
       }
       else {

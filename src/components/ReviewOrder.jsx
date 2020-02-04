@@ -20,7 +20,7 @@ const inCurrency = value => {
 }
 
 const ReviewOrder = props => {
-  const { orderResult = "" } = props
+  const { orderResult = []} = props
 
   const [totalPrice, setTotalPrice] = React.useState(0)
 
@@ -38,7 +38,7 @@ const ReviewOrder = props => {
       <Typography variant="h6">Bundles</Typography>
       <List disablePadding>
         {orderResult.map(order => (
-          <ListItem className={classes.listItem} key={order.uuid}>
+          <ListItem data-testid={`order-line-${order.uuid}`} className={classes.listItem} key={order.uuid}>
             <ListItemText
               primary={`${order.quantity} x ${order.code}`}
               secondary={!order.error ? Object.entries(order.order).map(([key, val]) => {
@@ -50,9 +50,9 @@ const ReviewOrder = props => {
             <Typography variant="body2">{inCurrency(order.totalPrice)}</Typography>
           </ListItem>
         ))}
-        <ListItem className={classes.listItem}>
+        <ListItem data-testid="total-price" className={classes.listItem}>
           <ListItemText primary="Total" />
-          <Typography variant="subtitle1" className={classes.total}>
+          <Typography data-testid="total-price-value" variant="subtitle1" className={classes.total}>
             {inCurrency(totalPrice)}
           </Typography>
         </ListItem>
