@@ -1,8 +1,8 @@
 import React from 'react'
-import { render, fireEvent } from '@testing-library/react'
-import ReviewOrder from '../components/ReviewOrder'
+import { render } from '@testing-library/react'
+import ReviewShipment from '../components/ReviewShipment'
 
-const exampleRoseOrder = {
+const exampleRoseShipment = {
   "uuid": "fb9c0830-b037-4eb8-babe-5d170dc0b745",
   "code": "R12",
   "bundles": [
@@ -35,76 +35,76 @@ const inCurrency = value => {
 }
 
 test('total price exists and is set to default value', () => {
-  const { getByTestId } = render(<ReviewOrder />)
+  const { getByTestId } = render(<ReviewShipment />)
   const totalPriceValue = getByTestId("total-price-value")
   expect(totalPriceValue).toBeInTheDocument()
   expect(totalPriceValue).toHaveTextContent("$0.00")
 })
 
-test('valid orders for 1 order are calculated and displayed', () => {
+test('valid items for 1 shipment are calculated and displayed', () => {
   const orderResult = [
-    exampleRoseOrder
+    exampleRoseShipment
   ]
-  const { getByTestId } = render(<ReviewOrder orderResult={orderResult} />)
+  const { getByTestId } = render(<ReviewShipment orderResult={orderResult} />)
 
-  const orderLine = getByTestId(`order-line-${exampleRoseOrder.uuid}`)
+  const orderLine = getByTestId(`order-line-${exampleRoseShipment.uuid}`)
   expect(orderLine).toBeInTheDocument()
   
   // quantity is listed and correct
-  expect(orderLine).toHaveTextContent(exampleRoseOrder.quantity)
+  expect(orderLine).toHaveTextContent(exampleRoseShipment.quantity)
 
   // code is listed and correct
-  expect(orderLine).toHaveTextContent(exampleRoseOrder.code)
+  expect(orderLine).toHaveTextContent(exampleRoseShipment.code)
 
-  const orderedBundles = Object.entries(exampleRoseOrder.order)
+  const orderedBundles = Object.entries(exampleRoseShipment.bundles)
   orderedBundles.forEach(([key, { quantity, subtotalPrice}]) => {
     // correct quantity of each bundle is listed
     expect(orderLine).toHaveTextContent(`${quantity} bundles of ${key}`)
     // subtotal price is listed and in the right format
     expect(orderLine).toHaveTextContent(`${inCurrency(subtotalPrice)}`)
     // total price for order line is listed, formatted and correct
-    expect(orderLine).toHaveTextContent(`${inCurrency(exampleRoseOrder.totalPrice)}`)
+    expect(orderLine).toHaveTextContent(`${inCurrency(exampleRoseShipment.totalPrice)}`)
   })
 
   const totalPriceValue = getByTestId("total-price-value")
   expect(totalPriceValue).toBeInTheDocument()
   // same value as one order
-  expect(totalPriceValue).toHaveTextContent(inCurrency(exampleRoseOrder.totalPrice))
+  expect(totalPriceValue).toHaveTextContent(inCurrency(exampleRoseShipment.totalPrice))
 })
 
-test('valid orders for multiple orders are calculated and displayed', () => {
+test('valid items for multiple shipments are calculated and displayed', () => {
   const repeats = 5
-  const orderResult = Array(repeats).fill(exampleRoseOrder).map((line, i) => ({
+  const orderResult = Array(repeats).fill(exampleRoseShipment).map((line, i) => ({
       ...line,
       uuid: line.uuid += i
     })
   )
-  const { getByTestId } = render(<ReviewOrder orderResult={orderResult} />)
+  const { getByTestId } = render(<ReviewShipment orderResult={orderResult} />)
 
   orderResult.forEach(line => {
     const orderLine = getByTestId(`order-line-${line.uuid}`)
     expect(orderLine).toBeInTheDocument()
     
     // quantity is listed and correct
-    expect(orderLine).toHaveTextContent(exampleRoseOrder.quantity)
+    expect(orderLine).toHaveTextContent(exampleRoseShipment.quantity)
 
     // code is listed and correct
-    expect(orderLine).toHaveTextContent(exampleRoseOrder.code)
+    expect(orderLine).toHaveTextContent(exampleRoseShipment.code)
 
-    const orderedBundles = Object.entries(exampleRoseOrder.order)
+    const orderedBundles = Object.entries(exampleRoseShipment.bundles)
     orderedBundles.forEach(([key, { quantity, subtotalPrice}]) => {
       // correct quantity of each bundle is listed
-      expect(orderLine).toHaveTextContent(`${quantity} bundles of ${key}`)
+      expect(orderLine).toHaveTextContent(`${quantity} bundle${quantity == 1 ? '' : 's'} of ${key}`)
       // subtotal price is listed and in the right format
       expect(orderLine).toHaveTextContent(`${inCurrency(subtotalPrice)}`)
       // total price for order line is listed, formatted and correct
-      expect(orderLine).toHaveTextContent(`${inCurrency(exampleRoseOrder.totalPrice)}`)
+      expect(orderLine).toHaveTextContent(`${inCurrency(exampleRoseShipment.totalPrice)}`)
     })
   })
 
   const totalPriceValue = getByTestId("total-price-value")
   expect(totalPriceValue).toBeInTheDocument()
   // same value as one order
-  expect(totalPriceValue).toHaveTextContent(inCurrency(repeats * exampleRoseOrder.totalPrice))
+  expect(totalPriceValue).toHaveTextContent(inCurrency(repeats * exampleRoseShipment.totalPrice))
 })
 

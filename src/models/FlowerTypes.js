@@ -1,9 +1,9 @@
-import RoseOrder from './RoseOrder'
-import LilyOrder from './LilyOrder'
-import TulipOrder from './TulipOrder'
+import RoseShipment from './RoseShipment'
+import LilyShipment from './LilyShipment'
+import TulipShipment from './TulipShipment'
 
 export default {
-  [RoseOrder.code]: RoseOrder,
-  [LilyOrder.code]: LilyOrder,
-  [TulipOrder.code]: TulipOrder,
+  [RoseShipment.code]: RoseShipment,
+  [LilyShipment.code]: LilyShipment,
+  [TulipShipment.code]: TulipShipment,
 }

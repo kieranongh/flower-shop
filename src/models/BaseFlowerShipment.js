@@ -1,62 +1,67 @@
 import uuid from 'uuid'
 
-export default class FlowerOrder {
+export default class BaseFlowerShipment {
   
-  constructor({ code, bundles, quantity }) {
+  constructor({ code, bundleTypes, quantity }) {
     this.uuid = uuid()
     this.code = code
-    this.bundles = bundles
+    this.bundleTypes = bundleTypes
     this.quantity = quantity
     this.error = null
-    this.order = this.generateOrder()
+    this.bundles = this.generateShipment()
     this.totalPrice = this.generateTotalPrice()
   }
 
-  generateOrder() {
-    let orderQuantity = this.quantity
-    var myOrder
+  generateShipment() {
+    const totalShipmentQuantity = this.quantity
+    var calcBundles
 
     let i = 0
-    while (i !== this.bundles.length) {
-      myOrder = this.bundles.slice(i).reduce(
+    while (i !== this.bundleTypes.length) {
+      calcBundles = this.bundleTypes.slice(i).reduce(
         (acc, curr) => {
           let myQuantity = Math.floor(acc.remaining / curr.quantity)
           let remaining = acc.remaining % curr.quantity
           let subtotalPrice = myQuantity * curr.price
 
-          return {
+          const newObj = { 
             ...acc,
-            [curr.quantity]: {
-              quantity: myQuantity,
-              subtotalPrice
-            },
             remaining
           }
+
+          if(myQuantity > 0) {
+            newObj[curr.quantity] = {
+              quantity: myQuantity,
+              subtotalPrice
+            }
+          }
+
+          return newObj
         },
         {
-          remaining: orderQuantity
+          remaining: totalShipmentQuantity
         } // initial
       )
       
-      if(myOrder.remaining !== 0) {
+      if(calcBundles.remaining !== 0) {
         i++
       }
       else {
         // remove the temporary variable
-        delete myOrder.remaining
-        return myOrder
+        delete calcBundles.remaining
+        return calcBundles
       }
 
     }
     // if no solution found, set an error and return an empty order
-    if (! (i < this.bundles.length)) {
+    if (! (i < this.bundleTypes.length)) {
       this.error = "Order cannot be met with bundles, try another quantity"
       return { }
     }
   }
 
   generateTotalPrice() {
-    return Object.values(this.order).reduce(
+    return Object.values(this.bundles).reduce(
       (acc, curr) => (acc + curr.subtotalPrice),
       0
     )

@@ -19,7 +19,7 @@ const inCurrency = value => {
   return `$${(value/100).toFixed(2)}`
 }
 
-const ReviewOrder = props => {
+const ReviewShipment = props => {
   const { orderResult = []} = props
 
   const [totalPrice, setTotalPrice] = React.useState(0)
@@ -37,17 +37,19 @@ const ReviewOrder = props => {
     <React.Fragment>
       <Typography variant="h6">Bundles</Typography>
       <List disablePadding>
-        {orderResult.map(order => (
-          <ListItem data-testid={`order-line-${order.uuid}`} className={classes.listItem} key={order.uuid}>
+        {orderResult.map(shipment => (
+          <ListItem data-testid={`order-line-${shipment.uuid}`} className={classes.listItem} key={shipment.uuid}>
             <ListItemText
-              primary={`${order.quantity} x ${order.code}`}
-              secondary={!order.error ? Object.entries(order.order).map(([key, val]) => {
-                return (<React.Fragment key={key}>{val.quantity} bundles of {key} = {inCurrency(val.subtotalPrice)}<br/></React.Fragment>)
-              }) :
-              (<React.Fragment>{order.error}</React.Fragment> )
+              primary={`${shipment.quantity} x ${shipment.code}`}
+              secondary={!shipment.error ? Object.entries(shipment.bundles).map(([key, { quantity, subtotalPrice}]) => (
+                <React.Fragment key={key}>
+                  {quantity} bundle{quantity == 1 ? '' : 's'} of {key} = {inCurrency(subtotalPrice)}<br/>
+                </React.Fragment>
+              )) :
+              (<React.Fragment>{shipment.error}</React.Fragment> )
             }
             />
-            <Typography variant="body2">{inCurrency(order.totalPrice)}</Typography>
+            <Typography variant="body2">{inCurrency(shipment.totalPrice)}</Typography>
           </ListItem>
         ))}
         <ListItem data-testid="total-price" className={classes.listItem}>
@@ -61,4 +63,4 @@ const ReviewOrder = props => {
   )
 }
 
-export default ReviewOrder
+export default ReviewShipment

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 
 import CssBaseline from '@material-ui/core/CssBaseline'
@@ -8,7 +8,7 @@ import Grid from '@material-ui/core/Grid'
 
 import FlowerTypes from '../models/FlowerTypes'
 import OrderForm from './OrderForm'
-import ReviewOrder from './ReviewOrder'
+import ReviewShipment from './ReviewShipment'
 import { Typography } from '@material-ui/core'
 
 const useStyles = makeStyles(theme => ({
@@ -47,6 +47,8 @@ const FlowerShop = () => {
         const flowerType = FlowerTypes[req.code]
         const order = flowerType ? new flowerType(req.quantity) : null
 
+        console.log(`order => `, order)
+
         if(!order) {
           throw new Error('Flower type does not exist')
         }
@@ -84,7 +86,7 @@ const FlowerShop = () => {
           </Grid>
           <Grid item xs={12} md={6}>
             <Paper className={classes.paper}>
-              <ReviewOrder
+              <ReviewShipment
                 orderResult={orderResult}
               />
             </Paper>
