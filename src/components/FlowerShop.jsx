@@ -7,6 +7,7 @@ import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 
+import logo from '../static/android-chrome-192x192.png'
 import OrderForm from './OrderForm'
 import ReviewShipment from './ReviewShipment'
 import { parseOrderInput } from '../utils'
@@ -50,6 +51,9 @@ const FlowerShop = () => {
     <React.Fragment>
       <CssBaseline />
       <Container className={classes.layout}>
+        <div className={classes.paper} style={{ textAlign: "center" }}>
+          <Typography variant="h4">Flower Supply Shop</Typography>
+        </div>
         <Grid container justify="center" spacing={3}>
           {error && (
             <Grid item xs={12}>
@@ -74,6 +78,13 @@ const FlowerShop = () => {
               />
             </Paper>
           </Grid>
+
+          <Grid item xs={12}>
+            <Grid className={classes.paper} container justify="center">
+              <img src={logo} alt="FSS logo" style={{opacity: 0.5}} />
+            </Grid>
+          </Grid>
+
         </Grid>
       </Container>
     </React.Fragment>

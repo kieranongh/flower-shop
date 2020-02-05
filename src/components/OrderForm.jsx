@@ -20,8 +20,6 @@ const OrderForm = props => {
       <Typography variant="h6">Orders</Typography>
       <Grid container
         direction="column"
-        justify="center"
-        alignItems="center"
         spacing={2}
       >
         <Grid item xs={12}>
@@ -35,13 +33,18 @@ const OrderForm = props => {
           />
         </Grid>
         <Grid item xs={12}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={calculateOrders}
-            >
-            Calculate Orders
-          </Button>
+          <Grid container
+            justify="center"
+            alignItems="center"
+          >
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={calculateOrders}
+              >
+              Calculate Bundles
+            </Button>
+          </Grid>
         </Grid>
       </Grid>
     </React.Fragment>
