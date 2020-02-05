@@ -3,7 +3,7 @@ import FlowerTypes from './models/FlowerTypes'
 const parseOrderInput = orderInput => {
   const requests = orderInput.split(/\n/).map(line => {
     const [quantity, code] = line.split(/\s/)
-    return { code, quantity }
+    return { code, quantity: +quantity }
   })
   
   const shipments = requests.map(req => {
