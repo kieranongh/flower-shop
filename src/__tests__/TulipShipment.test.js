@@ -33,6 +33,17 @@ test('Create an instance, check valid orders are correct', () => {
   expect(shipment).toHaveProperty("totalPrice", 2585)
 })
 
+test('Check complex order logic is correct', () => {
+  const shipment = new TulipShipment(49)
+  expect(shipment).toBeDefined()
+  // property that's used to calculate orders
+  expect(shipment).not.toHaveProperty("remaining")
+  expect(shipment).toHaveProperty("bundles.9", { quantity: 4, subtotalPrice: 6796 })
+  expect(shipment).toHaveProperty("bundles.5", { quantity: 2, subtotalPrice: 1990 })
+  expect(shipment).toHaveProperty("bundles.3", { quantity: 1, subtotalPrice: 595 })
+  expect(shipment).toHaveProperty("totalPrice", 2585)
+})
+
 test('Create an instance, check unsolveable orders are handled', () => {
   const shipment = new TulipShipment(11)
   expect(shipment).toBeDefined()
