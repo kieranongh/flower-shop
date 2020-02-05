@@ -1,20 +1,25 @@
 import FlowerTypes from './models/FlowerTypes'
 
 const parseOrderInput = orderInput => {
-  const requests = orderInput.split(/\n/).map(line => {
-    const [quantity, code] = line.split(/\s/)
-    return { code, quantity: +quantity }
+  const orders = orderInput.split(/\n/).map(line => {
+    const [quantityRaw, code] = line.split(/\s/)
+    const quantity = +quantityRaw
+    if(!Number.isInteger(quantity)) {
+      throw new Error("Quantity must be an integer")
+    }
+    return { code, quantity }
   })
   
-  const shipments = requests.map(req => {
-    const flowerType = FlowerTypes[req.code]
-    const order = flowerType ? new flowerType(req.quantity) : null
+  const shipments = orders.map(order => {
+    const flowerType = FlowerTypes[order.code]
+    const shipment = flowerType ? new flowerType(order.quantity) : null
 
-    if(!order) {
-      throw new Error('Flower type does not exist')
+    if(!shipment) {
+      throw new Error(`Flower type: ${order.code} does not exist`)
     }
-    return order
+    return shipment
   })
+
 
   return shipments
 }
