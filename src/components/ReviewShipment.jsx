@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 
 import Typography from '@material-ui/core/Typography'
@@ -18,17 +18,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const ReviewShipment = props => {
-  const { orderResult = []} = props
-
-  const [totalPrice, setTotalPrice] = React.useState(0)
-
-  // calculates the total price when orderResult changes
-  useEffect(() => {
-      const total = orderResult.reduce((acc, curr) => (acc + curr.totalPrice), 0)
-      setTotalPrice(total)
-    },
-    [orderResult]
-  )
+  const { orderResult = [], totalPrice = 0 } = props
 
   const classes = useStyles()
 

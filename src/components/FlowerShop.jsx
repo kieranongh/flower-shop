@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography'
 import logo from '../static/android-chrome-192x192.png'
 import OrderForm from './OrderForm'
 import ReviewShipment from './ReviewShipment'
-import { loadBundleConfigurations } from '../api'
+import { loadBundleConfigurations, logShipmentCalculations } from '../api'
 import { parseOrderInput } from '../utils'
 
 const useStyles = makeStyles(theme => ({
@@ -35,6 +35,7 @@ const FlowerShop = () => {
   const [bundleConfigurations, setBundleConfigurations] = React.useState([])
   const [orderInput, setOrderInput] = React.useState(TEST)
   const [orderResult, setOrderResult] = React.useState([])
+  const [totalPrice, setTotalPrice] = React.useState(0)
   const [error, setError] = React.useState(null)
 
   useEffect(() => {
@@ -52,6 +53,14 @@ const FlowerShop = () => {
     try {
       const shipments = parseOrderInput(bundleConfigurations, orderInput)
       setOrderResult(shipments)
+      const total = shipments.reduce((acc, curr) => (acc + curr.totalPrice), 0)
+      setTotalPrice(total)
+      logShipmentCalculations(shipments, total)
+      .then(res => {
+
+      }, err => {
+        setError(err.message)
+      })
     }
     catch (e) {
       setError("Cannot read order string, is it correct?")
@@ -87,6 +96,7 @@ const FlowerShop = () => {
             <Paper className={classes.paper}>
               <ReviewShipment
                 orderResult={orderResult}
+                totalPrice={totalPrice}
               />
             </Paper>
           </Grid>
