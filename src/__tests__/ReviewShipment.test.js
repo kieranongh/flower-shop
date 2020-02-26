@@ -62,11 +62,6 @@ test('valid items for 1 shipment are calculated and displayed', () => {
     // total price for order line is listed, formatted and correct
     expect(orderLine).toHaveTextContent(`${inCurrency(exampleRoseShipment.totalPrice)}`)
   })
-
-  const totalPriceValue = getByTestId("total-price-value")
-  expect(totalPriceValue).toBeInTheDocument()
-  // same value as one order
-  expect(totalPriceValue).toHaveTextContent(inCurrency(exampleRoseShipment.totalPrice))
 })
 
 test('valid items for multiple shipments are calculated and displayed', () => {
@@ -98,10 +93,5 @@ test('valid items for multiple shipments are calculated and displayed', () => {
       expect(orderLine).toHaveTextContent(`${inCurrency(exampleRoseShipment.totalPrice)}`)
     })
   })
-
-  const totalPriceValue = getByTestId("total-price-value")
-  expect(totalPriceValue).toBeInTheDocument()
-  // same value as one order
-  expect(totalPriceValue).toHaveTextContent(inCurrency(repeats * exampleRoseShipment.totalPrice))
 })
 

@@ -1,11 +1,64 @@
 import { parseOrderInput, inCurrency } from '../utils'
 
+const bundleConfigurations = [
+  {
+    name: "rose",
+    code: "R12",
+    bundleTypes: [
+      {
+        quantity: 10,
+        price: 1299
+      },
+      {
+        quantity: 5,
+        price: 699
+      }
+    ]
+  },
+  {
+    name: "lily",
+    code: "L09",
+    bundleTypes: [
+      {
+        quantity: 9,
+        price: 2495
+      },
+      {
+        quantity: 6,
+        price: 1695
+      },
+      {
+        quantity: 3,
+        price: 995
+      }
+    ]
+  },
+  {
+    name: "tulip",
+    code: "T58",
+    bundleTypes: [
+      {
+        quantity: 9,
+        price: 1699
+      },
+      {
+        quantity: 5,
+        price: 995
+      },
+      {
+        quantity: 3,
+        price: 595
+      }
+    ]
+  }
+]
+
 test('Check valid, solveable parsing', () => {
   const orderInput = "10 R12\n" +
     "15 L09\n" +
     "13 T58"
   
-  const shipments = parseOrderInput(orderInput)
+  const shipments = parseOrderInput(bundleConfigurations, orderInput)
   
   expect(shipments).toHaveLength(3)
   
@@ -30,7 +83,7 @@ test('Check valid, unresolveable parsing', () => {
     "14 L09\n" +
     "4 T58"
   
-  const shipments = parseOrderInput(orderInput)
+  const shipments = parseOrderInput(bundleConfigurations, orderInput)
   
   expect(shipments).toHaveLength(3)
   
@@ -58,7 +111,7 @@ test('Check invalid parsing - quantity NaN', () => {
   let shipments
 
   expect(() => {
-    shipments = parseOrderInput(orderInput)
+    shipments = parseOrderInput(bundleConfigurations, orderInput)
   }).toThrow(/integer/i)
   
   expect(shipments).not.toBeDefined()
@@ -72,7 +125,7 @@ test('Check invalid parsing - unknown code', () => {
     let shipments
 
     expect(() => {
-      shipments = parseOrderInput(orderInput)
+      shipments = parseOrderInput(bundleConfigurations, orderInput)
     }).toThrow(/flower type/i)
     
     expect(shipments).not.toBeDefined()
