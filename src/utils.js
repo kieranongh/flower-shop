@@ -1,6 +1,6 @@
-import FlowerTypes from './models/FlowerTypes'
+import BaseFlowerShipment from './models/BaseFlowerShipment'
 
-const parseOrderInput = orderInput => {
+const parseOrderInput = (bundleConfigurations, orderInput) => {
   const orders = orderInput.split(/\n/).map(line => {
     const [quantityRaw, code] = line.split(/\s/)
     const quantity = +quantityRaw
@@ -11,13 +11,17 @@ const parseOrderInput = orderInput => {
   })
   
   const shipments = orders.map(order => {
-    const flowerType = FlowerTypes[order.code]
-    const shipment = flowerType ? new flowerType(order.quantity) : null
-
-    if(!shipment) {
+    const flowerType = bundleConfigurations.find(b => b.code === order.code)
+    if(flowerType) {
+      return new BaseFlowerShipment({
+        code: flowerType.code,
+        bundleTypes: flowerType.bundleTypes,
+        quantity: order.quantity
+      })
+    }
+    else {
       throw new Error(`Flower type: ${order.code} does not exist`)
     }
-    return shipment
   })
 
 

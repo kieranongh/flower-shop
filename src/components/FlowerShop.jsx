@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 
 import CssBaseline from '@material-ui/core/CssBaseline'
@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography'
 import logo from '../static/android-chrome-192x192.png'
 import OrderForm from './OrderForm'
 import ReviewShipment from './ReviewShipment'
+import { loadBundleConfigurations } from '../api'
 import { parseOrderInput } from '../utils'
 
 const useStyles = makeStyles(theme => ({
@@ -31,14 +32,25 @@ const TEST = `10 R12
 
 const FlowerShop = () => {
   const classes = useStyles()
+  const [bundleConfigurations, setBundleConfigurations] = React.useState([])
   const [orderInput, setOrderInput] = React.useState(TEST)
   const [orderResult, setOrderResult] = React.useState([])
   const [error, setError] = React.useState(null)
 
+  useEffect(() => {
+    loadBundleConfigurations
+    .then(res => {
+      setBundleConfigurations(res.data)
+    },
+    err => {
+      setError(err.message)
+    })
+  }, [])
+
   const calculateOrders = () => {
     setError(null)
     try {
-      const shipments = parseOrderInput(orderInput)
+      const shipments = parseOrderInput(bundleConfigurations, orderInput)
       setOrderResult(shipments)
     }
     catch (e) {
